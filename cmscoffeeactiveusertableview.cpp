@@ -10,16 +10,20 @@ CMSCoffeeActiveUserTableView::CMSCoffeeActiveUserTableView(CMSCoffeeActiveUserMo
 {
     setModel(userModel_);
     setAlternatingRowColors(true);
-    setMinimumWidth(450);
-    setMinimumHeight(400);
+    setMinimumWidth(600);
+    setMinimumHeight(500);
 
-    setColumnWidth(0, 225);
-    setColumnWidth(1, 75);
+    setColumnWidth(0, 300);
+    setColumnWidth(1, 90);
+    setColumnWidth(2, 90);
 
+    horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+    horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
+    horizontalHeader()->setResizeMode(1, QHeaderView::Fixed);
+    horizontalHeader()->setResizeMode(2, QHeaderView::Fixed);
     //setItemDelegate(new CMSCoffeeIntSpinBoxDelegate);
 
     setEditTriggers(QAbstractItemView::CurrentChanged | QAbstractItemView::SelectedClicked);
 
-    horizontalHeader()->setStretchLastSection(true);
     setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 }

@@ -14,9 +14,13 @@ CMSCoffeeAccountTableView::CMSCoffeeAccountTableView(CMSCoffeeAccountModel* acco
     setMinimumWidth(450);
     setMinimumHeight(400);
 
-    setColumnWidth(0, 75);
-    setColumnWidth(1, 250);
-    setColumnWidth(2, 75);
+    setColumnWidth(0, 90);
+    setColumnWidth(1, 350);
+    setColumnWidth(2, 90);
+
+    horizontalHeader()->setResizeMode(0, QHeaderView::Fixed);
+    horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
+    horizontalHeader()->setResizeMode(2, QHeaderView::Fixed);
 
     //setItemDelegateForColumn(0, new CMSCoffeeDateEditDelegate);
     setItemDelegateForColumn(1, new CMSCoffeeLineEditDelegate(completionModel));
@@ -24,6 +28,4 @@ CMSCoffeeAccountTableView::CMSCoffeeAccountTableView(CMSCoffeeAccountModel* acco
 
     setEditTriggers(QAbstractItemView::CurrentChanged | QAbstractItemView::SelectedClicked);
 
-    horizontalHeader()->setStretchLastSection(true);
-    //setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 }

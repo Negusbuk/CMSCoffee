@@ -273,7 +273,7 @@ int CMSCoffeeUserModel::rowCount(const QModelIndex & /*parent*/) const
 
 int CMSCoffeeUserModel::columnCount(const QModelIndex & /*parent*/) const
 {
-    return 3;
+    return 4;
 }
 
 QVariant CMSCoffeeUserModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -283,6 +283,7 @@ QVariant CMSCoffeeUserModel::headerData(int section, Qt::Orientation orientation
             if (section==0) return QString("Name");
             if (section==1) return QString("Active");
             if (section==2) return QString("Balance");
+            if (section==3) return QString("Deposits");
         } else if (orientation==Qt::Vertical) {
             if (section<users_.size()) return QString::number(section+1);
             return QString("*");
@@ -320,6 +321,9 @@ QVariant CMSCoffeeUserModel::data(const QModelIndex &index, int role) const
             if (index.column()==2) {
                 return QVariant(balanceFormat.arg(users_.at(index.row())->getBalance(), 0, 'f', 2));
             }
+            if (index.column()==3) {
+                return QVariant(balanceFormat.arg(users_.at(index.row())->getAccountBalance(), 0, 'f', 2));
+            }
         } else {
             if (index.column()==0) {
                 return QString("");
@@ -340,6 +344,7 @@ QVariant CMSCoffeeUserModel::data(const QModelIndex &index, int role) const
         if (index.column()==0) return Qt::AlignLeft + Qt::AlignVCenter;
         if (index.column()==1) return Qt::AlignHCenter + Qt::AlignVCenter;
         if (index.column()==2) return Qt::AlignRight + Qt::AlignVCenter;
+        if (index.column()==3) return Qt::AlignRight + Qt::AlignVCenter;
     }
 
     return QVariant();
@@ -450,7 +455,7 @@ int CMSCoffeeActiveUserModel::rowCount(const QModelIndex &index) const
 
 int CMSCoffeeActiveUserModel::columnCount(const QModelIndex &index) const
 {
-    return tickModel_->getDates().size() + 1;
+    return tickModel_->getDates().size() + 3;
 }
 
 QVariant CMSCoffeeActiveUserModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -459,10 +464,11 @@ QVariant CMSCoffeeActiveUserModel::headerData(int section, Qt::Orientation orien
         if (orientation==Qt::Horizontal) {
             if (section==0) return QString("Name");
             if (section==1) return QString("Balance");
-            if (section>1) {
+            if (section==2) return QString("Deposits");
+            if (section>2) {
                 std::set<QDate>& dates = tickModel_->getDates();
                 std::set<QDate>::reverse_iterator it = dates.rbegin();
-                std::advance(it, section-2);
+                std::advance(it, section-3);
                 return (*it).toString("dd/MM/yy");
             }
         } else if (orientation==Qt::Vertical) {
@@ -496,11 +502,14 @@ QVariant CMSCoffeeActiveUserModel::data(const QModelIndex &index, int role) cons
         if (index.column()==1) {
             return QVariant(balanceFormat.arg(users_.at(index.row())->getBalance(), 0, 'f', 2));
         }
-        if (index.column()>1) {
+        if (index.column()==2) {
+            return QVariant(balanceFormat.arg(users_.at(index.row())->getAccountBalance(), 0, 'f', 2));
+        }
+        if (index.column()>2) {
             CMSCoffeeUser * user = users_.at(index.row());
             std::set<QDate>& dates = tickModel_->getDates();
             std::set<QDate>::reverse_iterator it = dates.rbegin();
-            std::advance(it, index.column()-2);
+            std::advance(it, index.column()-3);
             QDate date = *it;
             CMSCoffeeTickEntry * entry = user->getTickEntry(date);
             if (!entry) return QString::number(0);
@@ -509,11 +518,11 @@ QVariant CMSCoffeeActiveUserModel::data(const QModelIndex &index, int role) cons
     }
 
     if (role == Qt::EditRole) {
-        if (index.column()>1) {
+        if (index.column()>2) {
             CMSCoffeeUser * user = users_.at(index.row());
             std::set<QDate>& dates = tickModel_->getDates();
             std::set<QDate>::reverse_iterator it = dates.rbegin();
-            std::advance(it, index.column()-2);
+            std::advance(it, index.column()-3);
             QDate date = *it;
             CMSCoffeeTickEntry * entry = user->getTickEntry(date);
             if (!entry) return QVariant(0);
@@ -532,12 +541,12 @@ QVariant CMSCoffeeActiveUserModel::data(const QModelIndex &index, int role) cons
 bool CMSCoffeeActiveUserModel::setData(const QModelIndex & index, const QVariant & value, int role)
 {
     if (role == Qt::EditRole) {
-        if (index.column()>1) {
+        if (index.column()>2) {
             if (!value.canConvert<int>()) return false;
             CMSCoffeeUser * user = users_.at(index.row());
             std::set<QDate>& dates = tickModel_->getDates();
             std::set<QDate>::reverse_iterator it = dates.rbegin();
-            std::advance(it, index.column()-2);
+            std::advance(it, index.column()-3);
             QDate date = *it;
             CMSCoffeeTickEntry * entry = user->getTickEntry(date);
             if (!entry) {
@@ -563,7 +572,10 @@ Qt::ItemFlags CMSCoffeeActiveUserModel::flags(const QModelIndex & index) const
     if (index.column()==1)
         return Qt::ItemIsEnabled;
 
-    if (index.column()>1)
+    if (index.column()==2)
+        return Qt::ItemIsEnabled;
+
+    if (index.column()>3)
         return Qt::ItemIsEditable | Qt::ItemIsEnabled;
 
     return Qt::ItemIsEnabled;
