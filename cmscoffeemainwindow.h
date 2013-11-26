@@ -10,6 +10,7 @@
 #include <cmscoffeetickmodel.h>
 #include <cmscoffeeaccountmodel.h>
 #include <cmscoffeeaccountentrycompletionmodel.h>
+#include <cmscoffeestats.h>
 
 class CMSCoffeeMainWindow : public QMainWindow
 {
@@ -26,6 +27,7 @@ protected:
     CMSCoffeeTickModel* tickModel_;
     CMSCoffeeAccountModel* accountModel_;
     CMSCoffeeAccountEntryCompletionModel* completionModel_;
+    CMSCoffeeStats* stats_;
 
     QToolBar* toolBar_;
     QTabWidget* tabWidget_;

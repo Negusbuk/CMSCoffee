@@ -17,6 +17,8 @@ public:
     explicit CMSCoffeeTickModel(CMSCoffeeUserModel* userModel,
                                 QObject *parent = 0);
 
+    const std::vector<CMSCoffeeTickEntry*>& getEntries() const { return entries_; }
+
     void read();
     void import(const std::string& filename);
 

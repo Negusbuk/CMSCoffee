@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QDate>
+#include <QDateTime>
 
 class CMSCoffeeUser;
 
@@ -15,6 +16,7 @@ public:
 
     const QString& getUUID() const { return uuid_; }
     const QDate& getDate() const { return date_; }
+    const QDateTime getDateTime() const { return QDateTime(date_); }
     float getAmount() const { return amount_; }
     CMSCoffeeUser* getUser() const { return user_; }
 

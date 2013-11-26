@@ -19,7 +19,7 @@ public:
 
     void read();
     void import(const std::string& filename);
-    const std::vector<CMSCoffeeAccountEntry*> getEntries() const { return entries_; }
+    const std::vector<CMSCoffeeAccountEntry*>& getEntries() const { return entries_; }
 
     int rowCount(const QModelIndex &index = QModelIndex()) const ;
     int columnCount(const QModelIndex &index = QModelIndex()) const;

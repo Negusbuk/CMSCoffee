@@ -136,8 +136,8 @@ void CMSCoffeeUserModel::print()
     QColor grey(220, 220, 220);
     QBrush brush(grey);
 
-    int rowHeight = 20;
-    int linesPerPage = 37;
+    int rowHeight = 18;
+    int linesPerPage = 42;
     int headerHeight = height - 20 - linesPerPage * rowHeight;
 
     int lineNumber = 0;
@@ -549,13 +549,16 @@ bool CMSCoffeeActiveUserModel::setData(const QModelIndex & index, const QVariant
             std::advance(it, index.column()-3);
             QDate date = *it;
             CMSCoffeeTickEntry * entry = user->getTickEntry(date);
+            bool valueChanged = false;
             if (!entry) {
                 entry = new CMSCoffeeTickEntry(user->getUUID(), date,
                                                CMSCoffeeTickEntry::tickPrice(),
                                                value.toInt());
                 tickModel_->addEntry(entry);
                 user->addTickEntry(entry);
+                valueChanged = true;
             } else {
+                valueChanged = (value.toInt() != entry->getCount());
                 entry->setCount(value.toInt());
             }
             emit dataChanged(index, index);
@@ -575,8 +578,13 @@ Qt::ItemFlags CMSCoffeeActiveUserModel::flags(const QModelIndex & index) const
     if (index.column()==2)
         return Qt::ItemIsEnabled;
 
-    if (index.column()>3)
+    if (index.column()>2)
         return Qt::ItemIsEditable | Qt::ItemIsEnabled;
 
     return Qt::ItemIsEnabled;
+}
+
+QModelIndex CMSCoffeeActiveUserModel::index(int row, int column, const QModelIndex & parent)
+{
+    return createIndex(row, column);
 }

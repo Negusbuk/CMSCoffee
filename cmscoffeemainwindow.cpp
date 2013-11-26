@@ -17,6 +17,8 @@ CMSCoffeeMainWindow::CMSCoffeeMainWindow(QWidget *parent)
     accountModel_ = new CMSCoffeeAccountModel(userModel_, this);
     completionModel_ = new CMSCoffeeAccountEntryCompletionModel(userModel_, accountModel_, this);
 
+    stats_ = new CMSCoffeeStats(userModel_, tickModel_, accountModel_, this);
+
     //userModel_->import("/Users/mussgill/Documents/Physik/CMS/CMS Coffee/Balance-Balance.csv");
     //tickModel_->import("/Users/mussgill/Documents/Physik/CMS/CMS Coffee/Balance-Balance.csv");
     //accountModel_->import("/Users/mussgill/Documents/Physik/CMS/CMS Coffee/Account-Account.csv");
@@ -76,6 +78,13 @@ CMSCoffeeMainWindow::CMSCoffeeMainWindow(QWidget *parent)
     connect(buttonPrint, SIGNAL(clicked()),
             userModel_, SLOT(print()));
     toolBar_->addWidget(buttonPrint);
+
+    QToolButton *buttonStats = new QToolButton(toolBar_);
+    buttonStats->setText("Stats");
+    buttonStats->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    connect(buttonStats, SIGNAL(clicked()),
+            stats_, SLOT(makeStats()));
+    toolBar_->addWidget(buttonStats);
 
     this->addToolBar(toolBar_);
 

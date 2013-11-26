@@ -16,6 +16,8 @@ signals:
     
 public slots:
 
+    void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+
 protected:
 
     CMSCoffeeActiveUserModel* userModel_;

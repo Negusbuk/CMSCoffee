@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <QHeaderView>
 
 #include "cmscoffeetableviewdelegates.h"
@@ -23,7 +25,15 @@ CMSCoffeeActiveUserTableView::CMSCoffeeActiveUserTableView(CMSCoffeeActiveUserMo
     horizontalHeader()->setResizeMode(2, QHeaderView::Fixed);
     //setItemDelegate(new CMSCoffeeIntSpinBoxDelegate);
 
-    setEditTriggers(QAbstractItemView::CurrentChanged | QAbstractItemView::SelectedClicked);
+    setEditTriggers(QAbstractItemView::CurrentChanged | QAbstractItemView::AnyKeyPressed);
+
+    connect(userModel_, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
+            this, SLOT(dataChanged(QModelIndex,QModelIndex)));
 
     setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+}
+
+void CMSCoffeeActiveUserTableView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+{
+    setCurrentIndex(userModel_->index(topLeft.row()+1, topLeft.column()));
 }
