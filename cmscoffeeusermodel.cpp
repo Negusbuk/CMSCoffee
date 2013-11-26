@@ -55,25 +55,10 @@ void CMSCoffeeUserModel::write()
 {
     QDir path;
 
-#ifdef Q_WS_MAC
-    path = QDir::home();
-    path.cd("Library");
-    path.mkdir("CMSCoffee");
-    path.cd("CMSCoffee");
-#endif
-
-#ifdef Q_WS_X11
-    path = QDir::home();
-    path.cd("Library");
-    path.mkdir(".CMSCoffee");
-    path.cd(".CMSCoffee");
-#endif
-
-#ifdef Q_WS_WIN
-    path = QDir::home();
-    path.cd("/Application Data/");
-    path.mkdir("CMSCoffee");
-    path.cd("CMSCoffee");
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+    QString path = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+#else
+    QString path = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
 #endif
 
     QFile file(path.absoluteFilePath("users.xml"));
@@ -193,25 +178,10 @@ void CMSCoffeeUserModel::read()
 
     QDir path;
 
-#ifdef Q_WS_MAC
-    path = QDir::home();
-    path.cd("Library");
-    path.mkdir("CMSCoffee");
-    path.cd("CMSCoffee");
-#endif
-
-#ifdef Q_WS_X11
-    path = QDir::home();
-    path.cd("Library");
-    path.mkdir(".CMSCoffee");
-    path.cd(".CMSCoffee");
-#endif
-
-#ifdef Q_WS_WIN
-    path = QDir::home();
-    path.cd("/Application Data/");
-    path.mkdir("CMSCoffee");
-    path.cd("CMSCoffee");
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+    QString path = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+#else
+    QString path = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
 #endif
 
     QFile file(path.absoluteFilePath("users.xml"));
