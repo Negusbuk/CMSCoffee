@@ -11,6 +11,11 @@
 #include <QStringList>
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+#include <QDesktopServices>
+#else
+#include <QStandardPaths>
+#endif
 
 #include <QFileDialog>
 #include <QPrinter>
@@ -56,9 +61,9 @@ void CMSCoffeeUserModel::write()
     QDir path;
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QString path = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+    path = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
 #else
-    QString path = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+    path = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
 #endif
 
     QFile file(path.absoluteFilePath("users.xml"));
@@ -179,9 +184,9 @@ void CMSCoffeeUserModel::read()
     QDir path;
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QString path = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+    path = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
 #else
-    QString path = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+    path = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
 #endif
 
     QFile file(path.absoluteFilePath("users.xml"));

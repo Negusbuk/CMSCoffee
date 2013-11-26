@@ -8,7 +8,11 @@ QMAKE_CXXFLAGS += -std=c++0x
 
 QT       += core gui xml
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
+
+greaterThan(QT_MAJOR_VERSION, 4){
+  cache()
+}
 
 TARGET = CMSCoffee
 TEMPLATE = app
