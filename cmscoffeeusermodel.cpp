@@ -124,6 +124,9 @@ void CMSCoffeeUserModel::print()
     pen.setWidth(1);
     painter.setPen(pen);
 
+    QFont font("Helvetica", 12);
+    painter.setFont(font);
+
     QColor grey(220, 220, 220);
     QBrush brush(grey);
 
@@ -149,7 +152,7 @@ void CMSCoffeeUserModel::print()
             painter.drawText(15, 10, 220, headerHeight,
                              Qt::AlignHCenter + Qt::AlignVCenter, "NAME");
 
-            painter.drawText(245, 10, 60, headerHeight,
+            painter.drawText(245, 10, 90, headerHeight,
                              Qt::AlignHCenter + Qt::AlignVCenter, "BALANCE");
 
             for (int i=1;i<linesPerPage;++i) {
@@ -158,7 +161,7 @@ void CMSCoffeeUserModel::print()
             }
 
             painter.drawLine(240, 10, 240, height-10);
-            painter.drawLine(310, 10, 310, height-10);
+            painter.drawLine(340, 10, 340, height-10);
         }
 
         painter.drawText(15, 10 + headerHeight + lineNumber*rowHeight, 220, rowHeight,
@@ -166,8 +169,8 @@ void CMSCoffeeUserModel::print()
 
         double balance = (*it)->getBalance();
         QString balanceString = balanceFormat.arg(balance, 0, 'f', 2);
-        painter.drawText(245, 10 + headerHeight + lineNumber*rowHeight, 60, rowHeight,
-                         Qt::AlignRight + Qt::AlignVCenter,balanceString);
+        painter.drawText(245, 10 + headerHeight + lineNumber*rowHeight, 90, rowHeight,
+                         Qt::AlignRight + Qt::AlignVCenter, balanceString);
 
         lineNumber++;
         if (lineNumber==linesPerPage) {
