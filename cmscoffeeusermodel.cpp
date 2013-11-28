@@ -3,6 +3,7 @@
 #include <iterator>
 #include <locale>
 
+#include <QDebug>
 #include <QApplication>
 #include <QDir>
 #include <QFile>
@@ -126,9 +127,10 @@ void CMSCoffeeUserModel::print()
     QColor grey(220, 220, 220);
     QBrush brush(grey);
 
-    int rowHeight = 18;
-    int linesPerPage = 42;
-    int headerHeight = height - 20 - linesPerPage * rowHeight;
+    int headerHeight = 20;
+    int rowHeight = 20;
+    int linesPerPage = (height - 20 - headerHeight)/rowHeight;
+    headerHeight = height - 20 - linesPerPage * rowHeight;
 
     int lineNumber = 0;
 
