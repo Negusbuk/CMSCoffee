@@ -128,8 +128,8 @@ void CMSCoffeeUserModel::print()
     QBrush brush(grey);
 
     int headerHeight = 20;
-    int rowHeight = 20;
-    int linesPerPage = (height - 20 - headerHeight)/rowHeight;
+    int rowHeight = 24;
+    int linesPerPage = ((height - 20 - headerHeight)/rowHeight)-1;
     headerHeight = height - 20 - linesPerPage * rowHeight;
 
     int lineNumber = 0;
