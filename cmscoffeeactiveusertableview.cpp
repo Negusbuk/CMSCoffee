@@ -42,5 +42,9 @@ CMSCoffeeActiveUserTableView::CMSCoffeeActiveUserTableView(CMSCoffeeActiveUserMo
 
 void CMSCoffeeActiveUserTableView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
-    setCurrentIndex(userModel_->index(topLeft.row()+1, topLeft.column()));
+    if (userModel_->rowCount()>topLeft.row()+1) {
+        setCurrentIndex(userModel_->index(topLeft.row()+1, topLeft.column()));
+    } else {
+        setCurrentIndex(QModelIndex());
+    }
 }
