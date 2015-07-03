@@ -33,6 +33,8 @@ void CMSCoffeeStats::makeStats()
 
     makeBalanceHistory(dir);
     makeWeeklyStats(dir);
+    makeUserList(dir);
+    makeTickList(dir);
 }
 
 void CMSCoffeeStats::makeBalanceHistory(const QString& dir)
@@ -111,6 +113,54 @@ void CMSCoffeeStats::makeWeeklyStats(const QString& dir)
                 //std::cout << dt.toTime_t() << "\t" << it->second/nDays << std::endl;
             }
             lastDate = it->first;
+        }
+    }
+}
+
+void CMSCoffeeStats::makeUserList(const QString& dir)
+{
+    QString fn = dir + "/CMSCoffeeUsers.txt";
+    QFile data(fn);
+    if (data.open(QFile::WriteOnly | QFile::Truncate)) {
+        QTextStream out(&data);
+
+        const std::vector<CMSCoffeeUser*>& users = userModel_->getUsers();
+        for (std::vector<CMSCoffeeUser*>::const_iterator it = users.begin();
+             it!=users.end();
+             ++it) {
+            const CMSCoffeeUser* user = *it;
+
+            if (user->getActive()==false) continue;
+
+            out << user->getUUID() << "\t" << user->getName() << "\n";
+        }
+    }
+}
+
+void CMSCoffeeStats::makeTickList(const QString& dir)
+{
+    QString fn = dir + "/CMSCoffeeTicks.txt";
+    QFile data(fn);
+    if (data.open(QFile::WriteOnly | QFile::Truncate)) {
+        QTextStream out(&data);
+
+        const std::vector<CMSCoffeeUser*>& users = userModel_->getUsers();
+        for (std::vector<CMSCoffeeUser*>::const_iterator it = users.begin();
+             it!=users.end();
+             ++it) {
+            const CMSCoffeeUser* user = *it;
+
+            if (user->getActive()==false) continue;
+
+            const std::vector<CMSCoffeeTickEntry*>& entries = user->getTickEntries();
+            for (std::vector<CMSCoffeeTickEntry*>::const_iterator it = entries.begin();
+                 it!=entries.end();
+                 ++it) {
+                const CMSCoffeeTickEntry* entry = *it;
+                QDateTime dt(entry->getDate());
+
+                out << user->getUUID() << "\t" << dt.toTime_t() << "\t" << entry->getCount() << "\n";
+            }
         }
     }
 }
