@@ -532,7 +532,7 @@ bool CMSCoffeeActiveUserModel::setData(const QModelIndex & index, const QVariant
             bool valueChanged = false;
             if (!entry) {
                 entry = new CMSCoffeeTickEntry(user->getUUID(), date,
-                                               CMSCoffeeTickEntry::tickPrice(),
+                                               CMSCoffeeTickEntry::tickPrice(date),
                                                value.toInt());
                 tickModel_->addEntry(entry);
                 user->addTickEntry(entry);

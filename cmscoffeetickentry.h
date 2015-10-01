@@ -17,7 +17,7 @@ public:
 
     void setCount(int count) { count_ = count; }
 
-    static float tickPrice() { return 0.25; }
+    static float tickPrice(const QDate& date);
 
 protected:
 
