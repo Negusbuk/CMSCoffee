@@ -29,10 +29,10 @@ protected:
     CMSCoffeeAccountModel* accountModel_;
 
     void makeAccountHistory(const QString& dir);
-    void makeBalanceHistory(const QString& dir);
     void makeWeeklyStats(const QString& dir);
     void makeUserList(const QString& dir);
     void makeTickList(const QString& dir);
+    void makeUserStats(const QString& dir);
 };
 
 #endif // CMSCOFFEESTATS_H
