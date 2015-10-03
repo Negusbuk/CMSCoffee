@@ -31,10 +31,48 @@ void CMSCoffeeStats::makeStats()
 
     std::cout << dir.toStdString() << std::endl;
 
+    makeAccountHistory(dir);
     makeBalanceHistory(dir);
     makeWeeklyStats(dir);
     makeUserList(dir);
     makeTickList(dir);
+}
+
+void CMSCoffeeStats::makeAccountHistory(const QString& dir)
+{
+    std::map<QDateTime,float> historyMap;
+
+    const std::vector<CMSCoffeeAccountEntry*>& entries = accountModel_->getEntries();
+    for (std::vector<CMSCoffeeAccountEntry*>::const_iterator it = entries.begin();
+         it!=entries.end();
+         ++it) {
+        const CMSCoffeeAccountEntry* entry = *it;
+        QDateTime dt = entry->getDateTime();
+        float amount = entry->getAmount();
+
+        std::map<QDateTime,float>::iterator itFind = historyMap.find(dt);
+        if (itFind==historyMap.end()) {
+            historyMap.insert(std::pair<QDateTime,float>(dt, amount));
+        } else {
+            float temp = itFind->second;
+            itFind->second = temp + amount;
+        }
+    }
+
+    QString fn = dir + "/CMSCoffeeAccountHistory.txt";
+    QFile data(fn);
+    if (data.open(QFile::WriteOnly | QFile::Truncate)) {
+        QTextStream out(&data);
+
+        float balance = 0;
+        for (std::map<QDateTime,float>::iterator it = historyMap.begin();
+             it!=historyMap.end();
+             ++it) {
+            balance += it->second;
+            out << it->first.toString("yyyy-MM-dd") << "\t" << it->first.toTime_t() << "\t" << balance << "\n";
+            //std::cout << it->first.toTime_t() << "\t" << balance << std::endl;
+        }
+    }
 }
 
 void CMSCoffeeStats::makeBalanceHistory(const QString& dir)
@@ -58,6 +96,30 @@ void CMSCoffeeStats::makeBalanceHistory(const QString& dir)
         }
     }
 
+    const std::vector<CMSCoffeeUser*>& users = userModel_->getUsers();
+    for (std::vector<CMSCoffeeUser*>::const_iterator it = users.begin();
+         it!=users.end();
+         ++it) {
+        const CMSCoffeeUser* user = *it;
+
+        const std::vector<CMSCoffeeTickEntry*>& entries = user->getTickEntries();
+        for (std::vector<CMSCoffeeTickEntry*>::const_iterator it = entries.begin();
+             it!=entries.end();
+             ++it) {
+            const CMSCoffeeTickEntry* entry = *it;
+            QDateTime dt(entry->getDate());
+            float amount = entry->getPrice();
+
+            std::map<QDateTime,float>::iterator itFind = historyMap.find(dt);
+            if (itFind==historyMap.end()) {
+                historyMap.insert(std::pair<QDateTime,float>(dt, -1.0 * amount));
+            } else {
+                float temp = itFind->second;
+                itFind->second = temp - amount;
+            }
+        }
+    }
+
     QString fn = dir + "/CMSCoffeeBalanceHistory.txt";
     QFile data(fn);
     if (data.open(QFile::WriteOnly | QFile::Truncate)) {
@@ -68,8 +130,7 @@ void CMSCoffeeStats::makeBalanceHistory(const QString& dir)
              it!=historyMap.end();
              ++it) {
             balance += it->second;
-            out << it->first.toTime_t() << "\t" << balance << "\n";
-            //std::cout << it->first.toTime_t() << "\t" << balance << std::endl;
+            out << it->first.toString("yyyy-MM-dd") << "\t" << it->first.toTime_t() << "\t" << balance << "\n\r";
         }
     }
 }
@@ -109,7 +170,7 @@ void CMSCoffeeStats::makeWeeklyStats(const QString& dir)
             if (lastDate.isValid()) {
                 float nDays = lastDate.daysTo(it->first);
                 QDateTime dt(it->first);
-                out << dt.toTime_t() << "\t" << it->second/nDays << "\n";
+                out << it->first.toString("yyyy-MM-dd") << "\t" << dt.toTime_t() << "\t" << it->second/nDays << "\n";
                 //std::cout << dt.toTime_t() << "\t" << it->second/nDays << std::endl;
             }
             lastDate = it->first;
@@ -130,9 +191,9 @@ void CMSCoffeeStats::makeUserList(const QString& dir)
              ++it) {
             const CMSCoffeeUser* user = *it;
 
-            if (user->getActive()==false) continue;
+            //if (user->getActive()==false) continue;
 
-            out << user->getUUID() << "\t" << user->getName() << "\n";
+            out << user->getUUID() << "\t" << (int)user->getActive() << "\t" << user->getName() << "\n";
         }
     }
 }
@@ -150,7 +211,7 @@ void CMSCoffeeStats::makeTickList(const QString& dir)
              ++it) {
             const CMSCoffeeUser* user = *it;
 
-            if (user->getActive()==false) continue;
+            //if (user->getActive()==false) continue;
 
             const std::vector<CMSCoffeeTickEntry*>& entries = user->getTickEntries();
             for (std::vector<CMSCoffeeTickEntry*>::const_iterator it = entries.begin();
@@ -159,7 +220,7 @@ void CMSCoffeeStats::makeTickList(const QString& dir)
                 const CMSCoffeeTickEntry* entry = *it;
                 QDateTime dt(entry->getDate());
 
-                out << user->getUUID() << "\t" << dt.toTime_t() << "\t" << entry->getCount() << "\n";
+                out << user->getUUID() << "\t" << dt.toString("yyyy-MM-dd") << "\t" << dt.toTime_t() << "\t" << entry->getCount() << "\t" << entry->getPrice() << "\n";
             }
         }
     }

@@ -28,6 +28,7 @@ protected:
     CMSCoffeeTickModel* tickModel_;
     CMSCoffeeAccountModel* accountModel_;
 
+    void makeAccountHistory(const QString& dir);
     void makeBalanceHistory(const QString& dir);
     void makeWeeklyStats(const QString& dir);
     void makeUserList(const QString& dir);
