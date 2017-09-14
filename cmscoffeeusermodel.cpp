@@ -67,6 +67,10 @@ void CMSCoffeeUserModel::write()
     path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 #endif
 
+    if (!path.exists()) {
+        path.mkpath(".");
+    }
+
     QFile file(path.absoluteFilePath("users.xml"));
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         return;
