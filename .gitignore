@@ -13,3 +13,15 @@ CMSCoffee.pro.user
 *.lai
 *.la
 *.a
+
+.qmake.stash
+
+.qmake.cache
+
+
+debug
+object_script.CMSCoffee.Debug
+object_script.CMSCoffee.Release
+Makefile.Release
+Makefile.Debug
+Makefile
