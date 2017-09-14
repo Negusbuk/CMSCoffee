@@ -72,7 +72,7 @@ void CMSCoffeeAccountModel::write()
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     path = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
 #else
-    path = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+    path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 #endif
 
     QFile file(path.absoluteFilePath("account.xml"));
@@ -120,7 +120,7 @@ void CMSCoffeeAccountModel::read()
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     path = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
 #else
-    path = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+    path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 #endif
 
     QFile file(path.absoluteFilePath("account.xml"));
