@@ -25,7 +25,7 @@ CMSCoffeeAccountEntryWidget::CMSCoffeeAccountEntryWidget(CMSCoffeeAccountModel* 
 
     amountSpinBox_ = new QDoubleSpinBox(this);
     amountSpinBox_->setDecimals(2);
-    amountSpinBox_->setRange(-1000, 1000);
+    amountSpinBox_->setRange(-5000, 5000);
     amountSpinBox_->setSuffix(QString::fromUtf8(" \u20AC"));
     amountSpinBox_->setAlignment(Qt::AlignRight);
     layout->addWidget(amountSpinBox_);
