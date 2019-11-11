@@ -14,6 +14,7 @@
 #include <QStandardPaths>
 #endif
 
+#include "cmscoffeefilenames.h"
 #include "cmscoffeetickmodel.h"
 #include "cmscoffeeuser.h"
 
@@ -82,7 +83,7 @@ void CMSCoffeeTickModel::write()
         path.mkpath(".");
     }
 
-    QFile file(path.absoluteFilePath("ticks.xml"));
+    QFile file(path.absoluteFilePath(CMSCoffeeFileNames::instance()->ticksFilename()));
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         return;
 
@@ -121,7 +122,7 @@ void CMSCoffeeTickModel::read()
     path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 #endif
 
-    QFile file(path.absoluteFilePath("ticks.xml"));
+    QFile file(path.absoluteFilePath(CMSCoffeeFileNames::instance()->ticksFilename()));
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
         return;
 

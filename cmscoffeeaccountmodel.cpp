@@ -14,6 +14,7 @@
 #include <QStandardPaths>
 #endif
 
+#include "cmscoffeefilenames.h"
 #include "cmscoffeeaccountmodel.h"
 
 CMSCoffeeAccountModel::CMSCoffeeAccountModel(CMSCoffeeUserModel* userModel,
@@ -79,7 +80,7 @@ void CMSCoffeeAccountModel::write()
         path.mkpath(".");
     }
 
-    QFile file(path.absoluteFilePath("account.xml"));
+    QFile file(path.absoluteFilePath(CMSCoffeeFileNames::instance()->accountFilename()));
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         return;
 
@@ -127,7 +128,7 @@ void CMSCoffeeAccountModel::read()
     path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 #endif
 
-    QFile file(path.absoluteFilePath("account.xml"));
+    QFile file(path.absoluteFilePath(CMSCoffeeFileNames::instance()->accountFilename()));
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
         return;
 

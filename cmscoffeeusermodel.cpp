@@ -22,6 +22,7 @@
 #include <QPrinter>
 #include <QPainter>
 
+#include "cmscoffeefilenames.h"
 #include "cmscoffeeusermodel.h"
 #include "cmscoffeetickmodel.h"
 
@@ -71,7 +72,7 @@ void CMSCoffeeUserModel::write()
         path.mkpath(".");
     }
 
-    QFile file(path.absoluteFilePath("users.xml"));
+    QFile file(path.absoluteFilePath(CMSCoffeeFileNames::instance()->usersFilename()));
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         return;
 
@@ -101,7 +102,7 @@ void CMSCoffeeUserModel::print()
 {
     QString filename = QFileDialog::getSaveFileName(nullptr,
                                                     "Print to PDF",
-                                                    QDir::homePath() + "/CMSCoffee.pdf",
+                                                    QDir::homePath() + "/" + CMSCoffeeFileNames::instance()->printFilename(),
                                                     "Documents (*.pdf)");
     if (filename.isEmpty()) return;
 
@@ -198,7 +199,9 @@ void CMSCoffeeUserModel::read()
     path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 #endif
 
-    QFile file(path.absoluteFilePath("users.xml"));
+    std::cout << "CMSCoffeeUserModel::read() " << path.absolutePath().toStdString() << std::endl;
+
+    QFile file(path.absoluteFilePath(CMSCoffeeFileNames::instance()->usersFilename()));
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
         return;
 
