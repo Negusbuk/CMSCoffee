@@ -34,14 +34,14 @@ CMSCoffeeUserModel::CMSCoffeeUserModel(QObject *parent) :
 CMSCoffeeUser* CMSCoffeeUserModel::userByUUID(const QString& uuid)
 {
     std::map<QString,CMSCoffeeUser*>::const_iterator it = usersByUUID_.find(uuid);
-    if (it==usersByUUID_.end()) return 0;
+    if (it==usersByUUID_.end()) return nullptr;
     return it->second;
 }
 
 CMSCoffeeUser* CMSCoffeeUserModel::userByName(const QString& name)
 {
     std::map<QString,CMSCoffeeUser*>::const_iterator it = usersByName_.find(name);
-    if (it==usersByName_.end()) return 0;
+    if (it==usersByName_.end()) return nullptr;
     return it->second;
 }
 
@@ -99,7 +99,7 @@ void CMSCoffeeUserModel::write()
 
 void CMSCoffeeUserModel::print()
 {
-    QString filename = QFileDialog::getSaveFileName(0,
+    QString filename = QFileDialog::getSaveFileName(nullptr,
                                                     "Print to PDF",
                                                     QDir::homePath() + "/CMSCoffee.pdf",
                                                     "Documents (*.pdf)");

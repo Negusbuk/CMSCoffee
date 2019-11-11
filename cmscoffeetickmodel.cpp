@@ -50,7 +50,7 @@ void CMSCoffeeTickModel::sortByDate()
     std::sort(entries_.begin(), entries_.end(),
               [&](const CMSCoffeeTickEntry* a, const CMSCoffeeTickEntry* b)
     {
-        int days = a->getDate().daysTo(b->getDate());
+        long long days = a->getDate().daysTo(b->getDate());
         if (days!=0) return (days<0);
 
         CMSCoffeeUser * ua = userModel_->userByUUID(a->getUUID());
