@@ -3,6 +3,8 @@
 #include <QApplication>
 #include <QTextCodec>
 
+#include "cmscoffeefilenames.h"
+#include <cmscoffeeselector.h>
 #include <cmscoffeemainwindow.h>
 
 int main(int argc, char *argv[])
@@ -21,8 +23,15 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain("mussgiller.de");
     QCoreApplication::setApplicationName("CMSCoffee");
 
+    CMSCoffeeFileNames::instance();
+
+    CMSCoffeeSelector s;
+    s.exec();
+
     CMSCoffeeMainWindow w;
     w.show();
     
+    std::cout << s.currentSelection() << std::endl;
+
     return a.exec();
 }

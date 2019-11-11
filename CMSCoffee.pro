@@ -32,7 +32,9 @@ SOURCES += main.cpp\
     cmscoffeeaccountentrywidget.cpp \
     cmscoffeeaccountentrycompletionmodel.cpp \
     cmscoffeetableviewdelegates.cpp \
-    cmscoffeestats.cpp
+    cmscoffeestats.cpp \
+    cmscoffeeselector.cpp \
+    cmscoffeefilenames.cpp
 
 HEADERS  += cmscoffeemainwindow.h \
     cmscoffeeusermodel.h \
@@ -47,4 +49,6 @@ HEADERS  += cmscoffeemainwindow.h \
     cmscoffeeaccountentrywidget.h \
     cmscoffeeaccountentrycompletionmodel.h \
     cmscoffeetableviewdelegates.h \
-    cmscoffeestats.h
+    cmscoffeestats.h \
+    cmscoffeeselector.h \
+    cmscoffeefilenames.h
